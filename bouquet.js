@@ -554,14 +554,14 @@
     playBtn.addEventListener('click', function () {
       isPlaying = !isPlaying;
       playBtn.setAttribute('aria-pressed', isPlaying ? 'true' : 'false');
-      playBtn.textContent = isPlaying ? 'Pause 360° Spin' : 'Resume 360° Spin';
+      playBtn.textContent = isPlaying ? 'Pause ang spin' : 'Resume ang spin';
     });
   }
 
   // Respect system reduced-motion preference
   if (window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     isPlaying = false;
-    if (playBtn) playBtn.textContent = 'Resume 360° Spin';
+    if (playBtn) playBtn.textContent = 'Resume ang spin';
   }
 
   // Initial render & kick off loop
