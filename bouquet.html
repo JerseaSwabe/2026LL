@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>A Bouquet for You 🌸 — 360° ASCII Love Letter</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #030205;
+    --rose: #ff2478;
+    --rose-glow: rgba(255, 36, 120, 0.45);
+    --lily: #ffc9de;
+    --green: #2ed992;
+    --gold: #ffd166;
+    --paper: #ba83ab;
+    --ribbon: #ff1f5f;
+    --card-bg: rgba(20, 12, 18, 0.52);
+    --card-border: rgba(255, 120, 175, 0.14);
+    --text-primary: #f7eaf0;
+    --text-muted: #bda0b0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body {
+    width: 100%;
+    min-height: 100vh;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Montserrat', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: clip;
+  }
+
+  /* Ambient radial background glow */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 20%;
+    left: 25%;
+    width: 55vw;
+    height: 55vw;
+    max-width: 750px;
+    max-height: 750px;
+    background: radial-gradient(circle, rgba(255, 36, 120, 0.08) 0%, rgba(186, 131, 171, 0.03) 45%, transparent 75%);
+    pointer-events: none;
+    z-index: 0;
+    filter: blur(50px);
+    animation: pulseGlow 12s ease-in-out infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { transform: scale(0.92) translate(-2%, -2%); opacity: 0.7; }
+    100% { transform: scale(1.08) translate(2%, 2%); opacity: 1; }
+  }
+
+  /* Header Section */
+  .header {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: clamp(28px, 4.5vw, 48px) 20px clamp(12px, 2vw, 24px);
+  }
+
+  .badge-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    border-radius: 999px;
+    background: rgba(255, 36, 120, 0.08);
+    border: 1px solid rgba(255, 36, 120, 0.22);
+    font-size: 11px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #ff9ec9;
+    margin-bottom: 14px;
+    backdrop-filter: blur(8px);
+  }
+
+  .badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background-color: var(--rose);
+    box-shadow: 0 0 8px var(--rose);
+    animation: blink 2.2s infinite ease-in-out;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 0.35; transform: scale(0.85); }
+    50% { opacity: 1; transform: scale(1.25); }
+  }
+
+  .header h1 {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(32px, 5.2vw, 56px);
+    font-weight: 300;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+    text-shadow: 0 0 25px rgba(255, 60, 130, 0.5), 0 0 60px rgba(255, 60, 130, 0.25);
+  }
+
+  .header p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: clamp(16px, 2vw, 20px);
+    color: var(--text-muted);
+    letter-spacing: 1px;
+    margin-top: 6px;
+  }
+
+  /* Main Two-Column Stage */
+  .stage {
+    position: relative;
+    z-index: 1;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: clamp(10px, 2.5vw, 24px) clamp(16px, 3.5vw, 40px) clamp(40px, 5vw, 70px);
+    display: grid;
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    gap: clamp(24px, 4vw, 56px);
+    align-items: center;
+  }
+
+  /* Left Column: 3D ASCII Bouquet Art */
+  .art-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+  }
+
+  @media (min-width: 981px) {
+    .stage {
+      align-items: start;
+    }
+    .art-panel {
+      position: sticky;
+      top: clamp(16px, 3.5vh, 32px);
+      align-self: start;
+      z-index: 10;
+    }
+  }
+
+  .art-frame {
+    position: relative;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: grab;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: pan-y;
+  }
+
+  .art-frame:active {
+    cursor: grabbing;
+  }
+
+  .bouquet-glow {
+    position: absolute;
+    top: 36%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 70%;
+    height: 70%;
+    background: radial-gradient(circle, rgba(255, 36, 120, 0.16) 0%, rgba(255, 192, 203, 0.05) 50%, transparent 75%);
+    filter: blur(40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #bouquet {
+    position: relative;
+    z-index: 1;
+    font-family: "Cascadia Mono", Consolas, "DejaVu Sans Mono", "Courier New", monospace;
+    font-size: 11px;
+    line-height: 1.05;
+    white-space: pre;
+    color: #fff;
+    text-align: center;
+    filter: drop-shadow(0 0 16px rgba(255, 40, 120, 0.35));
+    transition: filter 0.3s ease;
+  }
+
+  /* 3D ASCII Color Classes */
+  .c-lily {
+    color: #ffd8e6;
+    text-shadow: 0 0 10px rgba(255, 200, 225, 0.6);
+  }
+
+  .c-rose {
+    color: #ff2b7f;
+    text-shadow: 0 0 12px rgba(255, 36, 120, 0.7);
+  }
+
+  .c-gold {
+    color: #ffe082;
+    text-shadow: 0 0 8px rgba(255, 215, 0, 0.8);
+    font-weight: bold;
+  }
+
+  .c-leaf {
+    color: #3ae89e;
+    text-shadow: 0 0 8px rgba(46, 217, 146, 0.4);
+  }
+
+  .c-paper {
+    color: #c48fb4;
+    text-shadow: 0 0 8px rgba(186, 131, 171, 0.3);
+  }
+
+  .c-ribbon {
+    color: #ff1f68;
+    text-shadow: 0 0 12px rgba(255, 31, 95, 0.75);
+    font-weight: 500;
+  }
+
+  .c-sparkle {
+    color: #ffffff;
+    text-shadow: 0 0 14px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 140, 200, 0.8);
+  }
+
+  /* Floating Controls beneath Bouquet */
+  .controls-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 14px;
+    z-index: 2;
+  }
+
+  .drag-hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 7px 18px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    font-size: 11.5px;
+    letter-spacing: 1px;
+    color: var(--text-muted);
+    backdrop-filter: blur(12px);
+    transition: all 0.3s ease;
+  }
+
+  .drag-hint.active {
+    border-color: rgba(255, 36, 120, 0.4);
+    color: #ffc9de;
+    background: rgba(255, 36, 120, 0.1);
+  }
+
+  .btn-action {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    font-family: inherit;
+    font-size: 11.5px;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    backdrop-filter: blur(12px);
+    transition: all 0.25s ease;
+  }
+
+  .btn-action:hover {
+    border-color: rgba(255, 36, 120, 0.4);
+    color: #fff;
+    background: rgba(255, 36, 120, 0.12);
+  }
+
+  /* Right Column: Sleek Glass Love Letter Card */
+  .letter-panel {
+    display: flex;
+    justify-content: center;
+  }
+
+  .card-letter {
+    width: 100%;
+    max-width: 580px;
+    background: linear-gradient(145deg, rgba(24, 15, 22, 0.6) 0%, rgba(12, 7, 14, 0.75) 100%);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
+    border: 1px solid var(--card-border);
+    border-radius: 24px;
+    padding: clamp(28px, 4vw, 44px);
+    box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.85),
+                0 0 50px -10px rgba(255, 36, 120, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Card corner glow accent */
+  .card-letter::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 140px;
+    height: 140px;
+    background: radial-gradient(circle at top right, rgba(255, 36, 120, 0.2) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .letter-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 24px;
+  }
+
+  .letter-title {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(28px, 3.2vw, 36px);
+    font-weight: 400;
+    color: #ff9ec9;
+    letter-spacing: 0.5px;
+    text-shadow: 0 0 20px rgba(255, 60, 130, 0.4);
+  }
+
+  .wax-seal {
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: radial-gradient(circle, #ff246e 0%, #aa0e40 70%, #5e0520 100%);
+    border: 1.5px solid rgba(255, 200, 220, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    box-shadow: 0 4px 16px rgba(255, 20, 100, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+  }
+
+  .wax-seal:hover {
+    transform: scale(1.12) rotate(10deg);
+    box-shadow: 0 6px 24px rgba(255, 20, 100, 0.7), inset 0 2px 4px rgba(255, 255, 255, 0.6);
+  }
+
+  .wax-seal:active {
+    transform: scale(0.95);
+  }
+
+  .letter-body p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(16px, 1.5vw, 18px);
+    line-height: 1.74;
+    color: #edd9e4;
+    margin-bottom: 1.15em;
+    letter-spacing: 0.2px;
+  }
+
+  .letter-body p strong {
+    color: #fff;
+    font-weight: 600;
+    text-shadow: 0 0 12px rgba(255, 120, 180, 0.4);
+  }
+
+  .letter-sign {
+    margin-top: 32px;
+    padding-top: 18px;
+    border-top: 1px solid rgba(255, 140, 190, 0.12);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-style: italic;
+    font-size: 18px;
+    color: var(--text-muted);
+  }
+
+  .letter-sign .name {
+    display: block;
+    font-style: normal;
+    font-size: clamp(19px, 2.1vw, 23px);
+    color: #ff9ec9;
+    margin-top: 8px;
+    letter-spacing: 0.5px;
+    line-height: 1.45;
+    text-shadow: 0 0 16px rgba(255, 60, 130, 0.5);
+  }
+
+  /* Monospace ASCII Heart Accent */
+  .ascii-heart {
+    margin-top: 24px;
+    text-align: center;
+    font-family: "Cascadia Mono", Consolas, monospace;
+    font-size: 8.5px;
+    line-height: 1.1;
+    white-space: pre;
+    color: var(--rose);
+    text-shadow: 0 0 14px rgba(255, 36, 120, 0.7);
+    user-select: none;
+    animation: pulseHeart 3s ease-in-out infinite;
+  }
+
+  @keyframes pulseHeart {
+    0%, 100% { transform: scale(1); opacity: 0.85; }
+    50% { transform: scale(1.05); opacity: 1; filter: drop-shadow(0 0 8px rgba(255, 36, 120, 0.8)); }
+  }
+
+  /* Audio Chime Notification pill */
+  .audio-toast {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    z-index: 100;
+    background: rgba(18, 11, 16, 0.85);
+    border: 1px solid rgba(255, 120, 180, 0.25);
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    color: #ffc9de;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    backdrop-filter: blur(16px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6);
+    transition: all 0.25s ease;
+  }
+
+  .audio-toast:hover {
+    background: rgba(255, 36, 120, 0.2);
+    border-color: rgba(255, 36, 120, 0.5);
+    color: #fff;
+  }
+
+  /* Footer */
+  .footer {
+    position: relative;
+    z-index: 1;
+    text-align: center;
+    padding: 0 20px 40px;
+    color: #7a586a;
+    font-size: 12px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* Responsive Breakpoints */
+  @media (max-width: 980px) {
+    .stage {
+      grid-template-columns: 1fr;
+      gap: 36px;
+      padding-top: 0;
+    }
+    .art-panel {
+      order: 1;
+    }
+    .letter-panel {
+      order: 2;
+    }
+    .card-letter {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .header {
+      padding-top: 24px;
+      padding-bottom: 8px;
+    }
+    .card-letter {
+      padding: 24px 20px;
+      border-radius: 18px;
+    }
+    .letter-body p {
+      font-size: 16.5px;
+      line-height: 1.75;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="badge-pill">
+    <span class="badge-dot"></span>
+    FOR NIKKI
+  </div>
+  <h1>A Bouquet for You</h1>
+  <p>Vibrant pink roses &amp; blush lilies</p>
+</header>
+
+<main class="stage">
+  <!-- Left Column: 3D ASCII Bouquet Art -->
+  <section class="art-panel" aria-label="360 degree interactive ASCII flower bouquet">
+    <div class="art-frame" id="bouquet-container" title="Click and drag to spin 360°">
+      <div class="bouquet-glow" aria-hidden="true"></div>
+      <pre id="bouquet" role="img" aria-label="3D ASCII bouquet of pink roses and lilies rotating in 360 degrees"></pre>
+    </div>
+
+    <div class="controls-bar">
+      <div class="drag-hint" id="drag-hint">
+        <span>↺</span> Drag para mag libot
+      </div>
+      <button class="btn-action" id="btn-spin" aria-pressed="true">
+        Pause ang spin
+      </button>
+    </div>
+  </section>
+
+  <!-- Right Column: Sleek Glass Love Letter Card -->
+  <section class="letter-panel" aria-label="Love Letter">
+    <article class="card-letter">
+      <div class="letter-header">
+        <h2 class="letter-title">hey gorgeous,</h2>
+        <div class="wax-seal" id="wax-seal" title="Sealed with love · Click for sparkles" role="button" tabindex="0">
+          💌
+        </div>
+      </div>
+
+      <div class="letter-body">
+        <p>sorry this took so long. i was figuring out the ascii art stuff, HAHAHA. anyways, here it is, my new love letter for you. honestly, i don't really know where to start with this one since most of my letters already cover so much about us, about how much i love you, how much you mean to me, and how grateful i am to have you in my life. but i guess there's always something new to say when it comes to you, because no matter how many letters i write, i don't think i'll ever run out of reasons to love you.</p>
+
+        <p>lately, i know i haven't been around as much as i would want to be. i know there have been times when i've been busy, caught up with things, or simply unable to give you the attention and time you deserve. and i want you to know that i'm aware of that. i never want you to feel like you're being put aside, forgotten, or that you're any less of a priority to me just because life gets a little hectic sometimes. please don't ever mistake my absence for a lack of love. just because i'm not always physically or virtually present doesn't mean you're any less on my mind. even on the busiest days, even when i have a million things going on, there's still a part of me that thinks about you, misses you, and wishes i could be right there beside you.</p>
+
+        <p>i promise i'll make sure to bawi, my love. i'll make more time for us, make more memories with you, give you more attention, and remind you every chance i get just how loved you are. i don't want my promises to remain just words written in a letter. i want you to feel them through my actions, through the little things i do, through the time i make for you, and through the effort i put into making sure you never have to question your place in my life. i know i can't always make every day perfect, but i want to keep trying to make every day a little better for you. you deserve that and so much more. you're mi baba mi everything mi all, my love mine all mine, my favorite person, my comfort, and my little piece of happiness. i hope you know that you never have to compete for a place in my heart because you've already got a permanent spot there. no subscription fees, no expiration date, no free trial. <strong>LIFETIME ACCESS ONLY.</strong></p>
+
+        <p>so please, whenever i'm not around, remember that i still love you soooo muchhh. you're always my girl, my pretty gorjas princess, and the person i want to keep choosing every single day. i'll keep working on myself, making time for you, and finding little ways to make you feel loved because you deserve nothing less.</p>
+
+        <p>i love you endlessly, gorgeous. thank you for being you, for being mine, and for making my life so much better just by being in it. i'll make sure to bawi, okay?</p>
+      </div>
+
+      <div class="letter-sign">
+        always yours, in every little way and in every possible lifetime.
+        <span class="name">i love youuuuu sooooo muchhhh, my everything mi all. mwaaaaaaaaa</span>
+      </div>
+
+      <pre class="ascii-heart" aria-hidden="true">
+   ***     ***   
+ ******* ******* 
+*****************
+ *************** 
+   ***********   
+     *******     
+       ***       
+        *        </pre>
+    </article>
+  </section>
+</main>
+
+<div class="audio-toast" id="btn-sound" role="button" tabindex="0" title="Toggle gentle romantic music chime">
+  <span id="sound-icon">♫</span> Play Romantic Chime
+</div>
+
+<footer class="footer">
+  Crafted with love · Endless perspective
+</footer>
+
+<script>
+// Romantic Synthesized Music Box Chime via Web Audio API
+(function() {
+  var audioCtx = null;
+  var isAudioPlaying = false;
+  var soundBtn = document.getElementById('btn-sound');
+  var soundIcon = document.getElementById('sound-icon');
+  var timer = null;
+
+  // Celestial music box chord notes (Frequencies in Hz: E5, G#5, B5, E6, F#6, G#6, B6)
+  var notes = [659.25, 830.61, 987.77, 1318.51, 1479.98, 1661.22, 1975.53];
+  var noteIdx = 0;
+
+  function playChimeNote(freq) {
+    if (!audioCtx) {
+      var AudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!AudioContext) return;
+      audioCtx = new AudioContext();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0, audioCtx.currentTime);
+    gain.gain.linearRampToValueAtTime(0.09, audioCtx.currentTime + 0.04);
+    gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 1.6);
+
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    osc.stop(audioCtx.currentTime + 1.65);
+  }
+
+  function startChimeLoop() {
+    isAudioPlaying = true;
+    soundBtn.innerHTML = '<span>♪</span> Pause Chime';
+    var melody = [0, 2, 3, 2, 5, 4, 3, 1, 0, 2, 4, 6];
+    var step = 0;
+    timer = setInterval(function() {
+      var note = notes[melody[step % melody.length] % notes.length];
+      playChimeNote(note);
+      step++;
+    }, 450);
+  }
+
+  function stopChimeLoop() {
+    isAudioPlaying = false;
+    clearInterval(timer);
+    soundBtn.innerHTML = '<span>♫</span> Play Romantic Chime';
+  }
+
+  if (soundBtn) {
+    soundBtn.addEventListener('click', function() {
+      if (isAudioPlaying) {
+        stopChimeLoop();
+      } else {
+        startChimeLoop();
+      }
+    });
+  }
+
+  // Wax seal interactive sparkle burst
+  var waxSeal = document.getElementById('wax-seal');
+  if (waxSeal) {
+    waxSeal.addEventListener('click', function() {
+      playChimeNote(1318.51);
+      setTimeout(function() { playChimeNote(1975.53); }, 120);
+      waxSeal.style.transform = 'scale(1.25) rotate(15deg)';
+      setTimeout(function() { waxSeal.style.transform = ''; }, 300);
+    });
+  }
+})();
+</script>
+<script src="bouquet.js"></script>
+</body>
+</html>
